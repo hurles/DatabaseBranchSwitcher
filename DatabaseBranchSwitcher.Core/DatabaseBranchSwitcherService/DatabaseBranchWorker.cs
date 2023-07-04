@@ -70,12 +70,12 @@ public class DatabaseBranchWorker : BackgroundService
 
         try
         {
-            var backup = await _backupService.ExecuteBackupQuery(repo, currentBranch, cancellationToken);
+            var backup = await _backupService.ExecuteBackupQuery(repo, repo.CurrentBranch, cancellationToken);
 
             if (backup is not null)
             {
-                _cacheFileManager.SetCurrentBranchForRepository(repo.GitFilePath, currentBranch);
                 _cacheFileManager.AddBackup(repo.GitFilePath, currentBranch, backup);
+                _cacheFileManager.SetCurrentBranchForRepository(repo.GitFilePath, currentBranch);
             }
         }
         catch (Exception e)
